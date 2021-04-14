@@ -32,8 +32,7 @@ import com.hrznstudio.galacticraft.client.render.block.entity.GalacticraftBlockE
 import com.hrznstudio.galacticraft.client.render.entity.*;
 import com.hrznstudio.galacticraft.client.resource.GCResourceReloadListener;
 import com.hrznstudio.galacticraft.entity.GalacticraftEntityTypes;
-import com.hrznstudio.galacticraft.misc.capes.CapeLoader;
-import com.hrznstudio.galacticraft.misc.capes.JsonCapes;
+import com.hrznstudio.galacticraft.misc.capes.CapesLoader;
 import com.hrznstudio.galacticraft.mixin.SkyPropertiesAccessor;
 import com.hrznstudio.galacticraft.particle.GalacticraftParticles;
 import com.hrznstudio.galacticraft.particle.fluid.DrippingCrudeOilParticle;
@@ -72,17 +71,13 @@ import java.util.function.Function;
 @Environment(EnvType.CLIENT)
 public class GalacticraftClient implements ClientModInitializer {
 
-    public static JsonCapes jsonCapes;
-    public static CapeLoader capeLoader;
+    public static CapesLoader capesLoader;
 
     @Override
     public void onInitializeClient() {
         long startInitTime = System.currentTimeMillis();
         Galacticraft.logger.info("[Galacticraft] Starting client initialization.");
-        capeLoader = new CapeLoader();
-        jsonCapes = new JsonCapes();
-        capeLoader.register(jsonCapes);
-        capeLoader.load();
+        capesLoader = new CapesLoader();
 
         ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((spriteAtlasTexture, registry) -> {
             for (int i = 0; i < 8; i++) {

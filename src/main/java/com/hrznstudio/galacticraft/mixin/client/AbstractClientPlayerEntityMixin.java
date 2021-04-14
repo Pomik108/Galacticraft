@@ -22,6 +22,7 @@
 
 package com.hrznstudio.galacticraft.mixin.client;
 
+import com.hrznstudio.galacticraft.Constants;
 import com.hrznstudio.galacticraft.GalacticraftClient;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -45,10 +46,11 @@ public abstract class AbstractClientPlayerEntityMixin {
 
     @Inject(method = "getCapeTexture", at = @At("RETURN"), cancellable = true)
     private void getCapeTexture(CallbackInfoReturnable<Identifier> info) {
-        if (GalacticraftClient.jsonCapes.areCapesLoaded()) {
-            if (GalacticraftClient.jsonCapes.getCapePlayers().containsKey(this.getPlayerListEntry().getProfile().getId())) {
-                info.setReturnValue(GalacticraftClient.jsonCapes.getCapePlayers()
-                        .get(this.getPlayerListEntry().getProfile().getId()).getCape().getTexture());
+        if(GalacticraftClient.capesLoader.getPlayers() != null) {
+            if(GalacticraftClient.capesLoader.getPlayers().containsKey(this.getPlayerListEntry().getProfile().getId().toString())) {
+                info.setReturnValue(new Identifier(
+                        Constants.MOD_ID,
+                        "textures/cape/cape_" + GalacticraftClient.capesLoader.getPlayers().get(this.getPlayerListEntry().getProfile().getId()) + ".png"));
             }
         }
     }
