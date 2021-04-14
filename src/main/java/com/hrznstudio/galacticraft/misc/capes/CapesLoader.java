@@ -34,33 +34,26 @@ import java.nio.charset.Charset;
 import java.util.Map;
 
 public class CapesLoader {
-    private Map players;
-    private final Gson gson = new GsonBuilder().create();
+    public static Map PLAYERS;
 
-    public CapesLoader() {
-        load();
-    }
-
-    private void load() {
+    public static void load() {
         Util.getMainWorkerExecutor().execute(() -> {
             long startLoad = System.currentTimeMillis();
+            Gson gson = new GsonBuilder().create();
             Galacticraft.logger.info("[Galacticraft] Loading capes data...");
 
             try {
-                this.players = this.gson.fromJson(
+                PLAYERS = gson.fromJson(
                         IOUtils.toString(
                                 new URL("https://raw.githubusercontent.com/StellarHorizons/Galacticraft-Rewoven/main/capes.json"),
                                 Charset.defaultCharset()),
                         Map.class);
             } catch (IOException e) {
                 Galacticraft.logger.warn("[Galacticraft] Failed to load capes.", e);
+                return;
             }
 
-            Galacticraft.logger.info("[Galacticraft] Loaded capes for {} players. (Took {}ms)", this.players.size(), System.currentTimeMillis()-startLoad);
+            Galacticraft.logger.info("[Galacticraft] Loaded capes for {} players. (Took {}ms)", PLAYERS.size(), System.currentTimeMillis()-startLoad);
         });
-    }
-
-    public Map getPlayers() {
-        return players;
     }
 }

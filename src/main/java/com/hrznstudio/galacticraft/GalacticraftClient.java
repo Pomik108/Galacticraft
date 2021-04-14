@@ -71,13 +71,11 @@ import java.util.function.Function;
 @Environment(EnvType.CLIENT)
 public class GalacticraftClient implements ClientModInitializer {
 
-    public static CapesLoader capesLoader;
-
     @Override
     public void onInitializeClient() {
         long startInitTime = System.currentTimeMillis();
         Galacticraft.logger.info("[Galacticraft] Starting client initialization.");
-        capesLoader = new CapesLoader();
+        CapesLoader.load();
 
         ClientSpriteRegistryCallback.event(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE).register((spriteAtlasTexture, registry) -> {
             for (int i = 0; i < 8; i++) {
